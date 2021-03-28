@@ -1,0 +1,106 @@
+<div class="card">
+  <div class="card-body">
+    <h4>User Module</h4>
+    <div class="row">
+      <div class="col-sm-12">
+        <!-- Hover table card start -->
+          <div class="table-responsive" style="padding: 10px 35px;">
+            <button (click)="userAdd()" class="btn btn-primary" style="float: right">ADD USER</button>
+            <table class="table table-hover table-bordered" style="text-align: center">
+              <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Profile Pic</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let user of users; let srno = index">
+                <td>{{ srno + 1}}</td>
+                <td><img style="width: 75px;" src="{{user.imgPath+''+user.profile}}" class="img-thumbnail"></td>
+                <td>{{user.firstName +' '+ user.lastName}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.mobileNumber}}</td>
+                <td>
+                  <button class="btn btn-info btn-sm btn-outline-info" (click)="userEdit(user)"><i class="icofont icofont-edit-alt"></i>Edit</button>&nbsp; &nbsp;
+                  <button class="btn btn-success btn-sm btn-outline-success" (click)="userView(user._id)"><i class="icofont icofont-edit-alt"></i>View</button>&nbsp; &nbsp;
+                  <button class="btn btn-danger btn-sm btn-outline-danger" (click)="userDelete(user._id)"><i class="icofont icofont-trash"></i>Delete</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        <!-- Hover table card end -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div (click)="onContainerClicked($event)" class="basic modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}"
+     [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
+  <div class="modal-dialog" [ngClass]="dialogClass" style="transform: translate(0,55px);">
+    <div class="modal-content">
+      <div class="modal-header">{{userTitle}}</div>
+      <div class="modal-body">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group col-12">
+              <label>First Name</label>
+              <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+              <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.firstName.errors.required">First Name is required</div>
+              </div>
+
+              <label>Last Name</label>
+              <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+              <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.lastName.errors.required">Last Name is required</div>
+              </div>
+
+              <label>Email Id</label>
+              <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.email.errors.required">Email is required</div>
+              </div>
+
+              <label>Mobile No.</label>
+              <input type="text" formControlName="mobileNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors }" />
+              <div *ngIf="submitted && f.mobileNumber.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.mobileNumber.errors.required">Mobile No is required</div>
+              </div>
+
+              <label>Profile Pic.</label>
+              <input type="file" formControlName="profile" (change)="onFileSelect($event)" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.profile.errors }" />
+              <div *ngIf="submitted && f.profile.errors" class="invalid-feedback">
+                <div *ngIf="submitted && f.profile.errors.required">profile pic is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-12 text-right">
+              <button class="btn btn-success"><i class="icofont icofont-check-circled"></i>{{userButton}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div (click)="onContainerClicked($event)" class="basic modal fade" tabindex="-1" [ngClass]="{'in': dVisibleAnimate}"
+     [ngStyle]="{'display': dVisible ? 'block' : 'none', 'opacity': dVisibleAnimate ? 1 : 0}">
+  <div class="modal-dialog" [ngClass]="dialogClass" style="transform: translate(0,55px);">
+    <div class="modal-content">
+      <div class="modal-header">Are You Sure to Delete User ?</div>
+      <div class="modal-body" style="text-align: right;" *ngFor="let userid of del_id;">
+        <button class="btn btn-danger btn-sm btn-outline-danger" (click)="userDel(userid)"><i class="icofont icofont-trash"></i>Delete</button> &nbsp; &nbsp;
+        <button class="btn btn-info btn-sm btn-outline-info" (click)="dHide()"><i class="icofont icofont-close"></i>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
